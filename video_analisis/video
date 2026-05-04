@@ -1,0 +1,36 @@
+import cv2
+
+# 1. Cargar el video
+cap = cv2.VideoCapture('tu_video.mp4')
+
+if not cap.isOpened():
+    print("Error al abrir el video")
+    exit()
+
+# 2. Definir las coordenadas de la tabla (ajusta estos valores)
+# x, y son el punto superior izquierdo; w, h son ancho y alto
+x, y, w, h = 900, 50, 350, 400  # Ejemplo para la esquina superior derecha
+
+while cap.isOpened():
+    ret, frame = cap.read()
+    
+    if not ret:
+        break
+
+    # 3. Recortar la región de interés (ROI)
+    # Nota: En NumPy es [filas (y), columnas (x)]
+    tabla_segmentada = frame[y:y+h, x:x+w]
+
+    # 4. Mostrar solo la sección segmentada
+    cv2.imshow('Datos de Fuerza X, Y, Z', tabla_segmentada)
+    
+    # Mostrar también el original para referencia (opcional)
+    # cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    # cv2.imshow('Video Original con Marcador', frame)
+
+    # Salir con la tecla 'q'
+    if cv2.waitKey(25) & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
